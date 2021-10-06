@@ -32,7 +32,7 @@ function closeForm() {
     console.log('fermé')
 }
 
-function checkFirstAndLastName(input) {
+function checkFirstAndLastName(input, type) {
     const regex = /^[a-zA-Z\-éëàèìòùÀÈÌÒÙáéíóúýÁÉÍÓÚÝâêîôûÂÊÎÔÛãñõÃÑÕäëïöüÿÄËÏÖÜŸçÇÆæœ]{2,}$/;
     const input_value = input.value;
     const test = regex.test(input_value);
@@ -42,28 +42,30 @@ function checkFirstAndLastName(input) {
         input.parentElement.removeAttribute('data-error-visible');
     } else {
         input.parentElement.removeAttribute('valid');
-        input.parentElement.setAttribute('data-error', 'erreur');
+        if (type == 'first') {
+            input.parentElement.setAttribute('data-error', 'Veuillez entrer 2 caractères ou plus pour le champ du prénom.');
+        }
+        if (type == 'last') {
+            input.parentElement.setAttribute('data-error', 'Veuillez entrer 2 caractères ou plus pour le champ du nom.');
+        }
+
         input.parentElement.setAttribute('data-error-visible', true);
     }
 }
 
 
 
-async function checkEmail() {
-    const email = document.getElementById('email').value;
-    const length = document.getElementById('email').value.length;
+async function checkEmail(input) {
     var regex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    console.log(email.search(regex));
-    if (length !== 0) {
-        if (email.search(regex) == -1) {
-            erreur_email.style.display = "initial";
-            erreur_email.style.color = "red";
-            erreur_email.style.fontSize = "12px";
-        } else {
-            erreur_email.style.display = "none";
-        }
+    const test = regex.test(input.value)
+    if (test) {
+        input.parentElement.setAttribute('valid', true);
+        input.parentElement.removeAttribute('data-error');
+        input.parentElement.removeAttribute('data-error-visible');
     } else {
-        erreur_email.style.display = "none";
+        input.parentElement.removeAttribute('valid');
+        input.parentElement.setAttribute('data-error', 'Vous devez entrer une adresse email valide.');
+        input.parentElement.setAttribute('data-error-visible', true);
     }
 }
 
