@@ -23,18 +23,6 @@ const confirmed = document.querySelector('.confirmed');
 
 content_valid.style.display = "none";
 
-/*
-console.log("date : " + date.value);
-console.log("quantity : " + quantity.value)
-    
-    const radio = document.getElementsByName("location").forEach(radio => {
-        console.log("radio : " + radio.id);
-    })
-    */
-
-//console.log("check :  " + document.querySelector('input[name="location"]:checked'));
-
-
 // launch modal event
 modalBtn.forEach((btn) => btn.addEventListener("click", launchModal));
 
@@ -43,13 +31,12 @@ function launchModal() {
     modalbg.style.display = "block";
 }
 
+// fermer formulaire
 function closeForm() {
     form.style.display = "none";
-    //console.log('fermé');
-    //console.log("check :  " + document.querySelector('input[name="location"]:checked').value);
-    //validate();
 }
 
+// fermer la confirmation
 function closeConfirmation() {
     content_valid.style.display = "none";
     modalbg.style.display = 'none';
@@ -58,16 +45,15 @@ function closeConfirmation() {
     footer.style.display = "initial";
 }
 
+// verification du nom et prénom
 function checkFirstAndLastName(input, type) {
     const regex = /^[a-zA-Z\-éëàèìòùÀÈÌÒÙáéíóúýÁÉÍÓÚÝâêîôûÂÊÎÔÛãñõÃÑÕäëïöüÿÄËÏÖÜŸçÇÆæœ]{2,}$/;
     const input_value = input.value;
     const test = regex.test(input_value);
     if (test) {
-        //input.parentElement.setAttribute('valid', true);
         input.parentElement.removeAttribute('data-error');
         input.parentElement.removeAttribute('data-error-visible');
     } else {
-        //input.parentElement.removeAttribute('valid');
         if (type == 'first') {
             input.parentElement.setAttribute('data-error', 'Veuillez entrer 2 caractères ou plus pour le champ du prénom.');
         }
@@ -78,51 +64,40 @@ function checkFirstAndLastName(input, type) {
     }
 }
 
+// verification de l'adresse email
 function checkEmail(input) {
     var regex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     const test = regex.test(input.value)
     if (test) {
-        //input.parentElement.setAttribute('valid', true);
         input.parentElement.removeAttribute('data-error');
         input.parentElement.removeAttribute('data-error-visible');
     } else {
-        //input.parentElement.removeAttribute('valid');
         input.parentElement.setAttribute('data-error', 'Vous devez entrer une adresse email valide.');
         input.parentElement.setAttribute('data-error-visible', true);
     }
 }
 
+// verification de la date de naissance
 function checkBirthdate(input) {
     if (input.value) {
-        //input.parentElement.setAttribute('valid', true);
         input.parentElement.removeAttribute('data-error');
         input.parentElement.removeAttribute('data-error-visible');
     } else {
-        //input.parentElement.removeAttribute('valid');
         input.parentElement.setAttribute('data-error', 'Vous devez entrer votre date de naissance.');
         input.parentElement.setAttribute('data-error-visible', true);
     }
 }
 
+// verification du nombre
 function checkQuantity(input) {
     if (input.value) {
-        //input.parentElement.setAttribute('valid', true);
         input.parentElement.removeAttribute('data-error');
         input.parentElement.removeAttribute('data-error-visible');
     }
 }
 
+// fonction de la validation
 function validate() {
-    /*const radio_value = document.querySelector('input[name="location"]:checked').value;
-    console.log(radio_value)
-    if (radio_value == null) {
-        const radio_parent = document.querySelector('input[name="location"]').parentNode;
-        radio_parent.removeAttribute('valid');
-        radio_value.setAttribute('data-error', 'Vous devez choisir une option.');
-        radio_value.setAttribute('data-error-visible', true);
-    }
-    const check_value = document.querySelector('input[id="checkbox1"]').value;
-    console.log(check_value);*/
     const radio_value = document.querySelector('input[name="location"]:checked');
     if (radio_value == null) {
         const radio_parent = document.querySelector('input[name="location"]').parentNode;
@@ -167,22 +142,36 @@ function validate() {
     }
     if (radio_value !== null && check_value !== false && date !== '' && quantity && first && last && email) {
         console.log("valid true");
-        //content.style.display = "none";
-        //content_valid.style.display = "initial";
         return true;
     } else {
         console.log("valid false");
     }
 }
 
+// déclenchement de l'événement de la validation du formulaire
 form.addEventListener("submit", function(event) {
     event.preventDefault();
     if (validate() == true) {
         modalbg.style.display = 'none';
         hero_section.style.display = 'none';
-        content_valid.style.display = "initial"
+        content_valid.style.display = "initial";
         confirmed.style.color = "white";
+        confirmed.style.display = "flex"
+        confirmed.setAttribute('confirmed', true);
         topnav.style.display = "none";
         footer.style.display = "none";
+        document.querySelector('form').reset();
+        const check_parent = document.querySelector('input[id="checkbox1"]').parentNode;
+        check_parent.removeAttribute('data-error');
+        check_parent.removeAttribute('data-error-visible');
     }
 })
+
+// fermer la confirmation
+function closeConfirmation() {
+    hero_section.style.display = 'grid';
+    content_valid.style.display = "none"
+    confirmed.style.display = "none";
+    topnav.style.display = "initial";
+    footer.style.display = "initial";
+}
